@@ -28,7 +28,7 @@ The program is functional but still in an early stage, undergoing constant modif
 - SESSION_NAME=
 - INVITE_LINK=https://t.me/joinchat/AAAAAD7hjbvIBwTD4GfupQ
 
-# YOUR_API_ID
+## YOUR_API_ID
 Telegram API_ID
 
 # YOUR_API_HASH
