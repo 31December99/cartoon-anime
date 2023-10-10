@@ -6,6 +6,14 @@ from myguessit import MyGuessit
 
 
 class MyChannel:
+
+    mime_type_list = [
+        "video/x-matroska",  # .mkv .mk3d .mka .mks
+        "video/mpeg",  # .mpg, .mpeg, .mp2, .mp3
+        "video/x-mpeg",  #
+        "video/mp4",  # .mp4, .m4a, .m4p, .m4b, .m4r .m4v
+    ]
+
     def __init__(self):
         """
          Estrae ogni singolo file dividendolo dalla locandine
@@ -36,13 +44,14 @@ class MyChannel:
                     # Si accerta che esista un documento di media
                     if message.media:
                         if hasattr(message.media, 'document'):
-                            # esclude messaggi senza file name(pubblcità)
-                            if not message.file.name:
-                                continue
-                            # Memorizza per ogni documento media filename e ID del messaggio
-                            file_name = message.file.name
-                            print(file_name, message.id)
-                            self.media.filemedia = message.file.name, message.id
+                            if message.media.document.mime_type in self.mime_type_list:
+                                # esclude messaggi senza file name(pubblcità)
+                                if not message.file.name:
+                                    continue
+                                # Memorizza per ogni documento media filename e ID del messaggio
+                                file_name = message.file.name
+                                print(file_name, message.id)
+                                self.media.filemedia = message.file.name, message.id
                         else:
                             # Se media è già stato istanziato abbiamo raggiunto qui ora la prossima locandina
                             # lo salva quindi nella lista media_list. Al termine passa ad un'altra locandina.
