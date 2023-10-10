@@ -40,9 +40,6 @@ Telegram phone number
 # SESSION_NAME
 Choose the name you want for telegram session
 
-# IMGBB_KEY
-Your IMGBB Api key ( Search for it in your user profile)
-
 # INVITE_LINK
 Channel link -> https://t.me/joinchat/AAAAAD7hjbvIBwTD4GfupQ
 
