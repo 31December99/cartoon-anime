@@ -1,7 +1,7 @@
 # cartoon-anime
 Downloader https://t.me/joinchat/AAAAAD7hjbvIBwTD4GfupQ
 
-# Small downloader for downloading all Cartoon Anime files
+### Small downloader for downloading all Cartoon Anime files
 
 The program is functional but still in an early stage, undergoing constant modifications.
 
