@@ -28,22 +28,22 @@ The program is functional but still in an early stage, undergoing constant modif
 - SESSION_NAME=
 - INVITE_LINK=https://t.me/joinchat/AAAAAD7hjbvIBwTD4GfupQ
 
-# YOUR_API_ID
+## YOUR_API_ID
 Telegram API_ID
 
-# YOUR_API_HASH
+## YOUR_API_HASH
 Telegram API Hash
 
-# YOUR_PHONE_NUMBER
+## YOUR_PHONE_NUMBER
 Telegram phone number
 
-# SESSION_NAME
+## SESSION_NAME
 Choose the name you want for telegram session
 
-# IMGBB_KEY
+## IMGBB_KEY
 Your IMGBB Api key ( Search for it in your user profile)
 
-# INVITE_LINK
+## INVITE_LINK
 Channel link -> https://t.me/joinchat/AAAAAD7hjbvIBwTD4GfupQ
 
 ## Contribution
