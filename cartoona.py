@@ -3,6 +3,7 @@ import asyncio
 import mytelegram
 from mytelegram import MyTelegram
 from myguessit import MyGuessit
+from database import Database
 
 
 class MyChannel:
@@ -71,6 +72,9 @@ class MyChannel:
 async def main():
     anime = MyChannel()
     await anime.connect()
+    database = Database("CartoonAnme.db")
+    await database.connect()
+    await database.create_table("cartoonanime")
     media_list = await anime.struttura()
     for media in media_list:
         # quando media.filename è [] passa al prossimo media.title
