@@ -2,7 +2,6 @@ import re
 import aiosqlite
 import logging
 
-
 # LOG
 logging.basicConfig(level=logging.INFO)
 
@@ -20,7 +19,7 @@ class Database:
     async def insert_video(self, table: str, title: str, msgid: str, category: str) -> bool:
         try:
             await self.db.execute(f"INSERT INTO {table} (title,msgid,category) VALUES (?,?,?)",
-                            (title, msgid, category,))
+                                  (title, msgid, category,))
             return True
         except aiosqlite.IntegrityError:
             return False
