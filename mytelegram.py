@@ -155,10 +155,6 @@ class MyTelegram:
                 queue.task_done()
 
     async def downloader(self, media_list: MyMedia):
-        # Se filemedia è vuoto ( non in lista mimetypes)
-        if not media_list.filemedia:
-            print("-> escluso dalla lista di mimetype_list")
-            return
         # Prepara i workers
         queue = asyncio.Queue(1)
         workers = [asyncio.create_task(self.worker(queue)) for _ in range(3)]
