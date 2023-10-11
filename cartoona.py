@@ -6,7 +6,6 @@ from myguessit import MyGuessit
 
 
 class MyChannel:
-
     mime_type_list = [
         "video/x-matroska",  # .mkv .mk3d .mka .mks
         "video/mpeg",  # .mpg, .mpeg, .mp2, .mp3
@@ -53,10 +52,12 @@ class MyChannel:
                                 print(file_name, message.id)
                                 self.media.filemedia = message.file.name, message.id
                         else:
-                            # Se media è già stato istanziato abbiamo raggiunto qui ora la prossima locandina
-                            # lo salva quindi nella lista media_list. Al termine passa ad un'altra locandina.
+                            # Se media è già stato istanziato abbiamo raggiunto qui la prossima locandina
+                            # Se filemedia non è empty ( filmedia accettato in base alla list mimetype_list)
+                            # lo salva nella lista media_list. Al termine passa ad un'altra locandina.
                             if self.media:
-                                media_list.append(self.media)
+                                if self.media.filemedia:
+                                    media_list.append(self.media)
                             # Ottiene il testo della Locandina
                             poster = message.message
                             # Filtra il più possibile il testo poi lo passa a guessit e ottiene un titolo
@@ -72,8 +73,11 @@ async def main():
     await anime.connect()
     media_list = await anime.struttura()
     for media in media_list:
-        print(media.title)
-        await anime.telegram.downloader(media)
+        # quando media.filename è [] passa al prossimo media.title
+        # [] = l'estensione non è presente nella lista mimetype_list
+        if media.filemedia:
+            print(media.title)
+            await anime.telegram.downloader(media)
 
 
 if __name__ == '__main__':
