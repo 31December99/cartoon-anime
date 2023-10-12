@@ -16,11 +16,11 @@ class Database:
         self.db = await aiosqlite.connect(self.file_name)
         return self.db
 
-    async def insert_video(self, table: str, title: str, msgid: str, category: str, ids: str) -> bool:
+    async def insert_video(self, table: str, title: str, posterid: str, category: str, ids: str) -> bool:
         try:
             await self.db.execute(f"INSERT OR IGNORE INTO {table} (title,posterid,category,ids)"
                                   f" VALUES (?,?,?,?)",
-                                  (title, msgid, category, ','.join(ids),))
+                                  (title, posterid, category, ','.join(ids),))
             return True
         except aiosqlite.IntegrityError:
             return False
