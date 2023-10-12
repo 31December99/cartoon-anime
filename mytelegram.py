@@ -18,32 +18,40 @@ class MyMedia:
 
     def __init__(self):
         self.__title = None
-        self.__msgid = None
-        self.__filemedia = []
+        self.__posterid = None
+        self.__ids = []
 
     @property
     def title(self):
         return self.__title
 
     @property
-    def filemedia(self):
-        return self.__filemedia
+    def ids(self):
+        return self.__ids
+
+    @property
+    def posterid(self):
+        return self.__posterid
 
     @title.setter
     def title(self, value):
         self.__title = value
 
-    @filemedia.setter
-    def filemedia(self, value):
-        self.__filemedia.append(value)
+    @ids.setter
+    def ids(self, value):
+        self.__ids.append(str(value))
+
+    @posterid.setter
+    def posterid(self, value):
+        self.__posterid = value
 
     def saved(self) -> bool:
         return True if (self.__title and
-                        self.__msgid and
-                        self.__filemedia) else False
+                        self.__posterid and
+                        self.__ids) else False
 
     def __str__(self):
-        print(self.__title, self.__msgid, self.__filemedia)
+        print(self.__title, self.__posterid, self.__ids)
 
 
 class MyTelegram:
@@ -51,6 +59,7 @@ class MyTelegram:
     Classe per creare una connessione verso telegram
 
     """
+
     def __init__(self):
         self.__takeout = None
         self.__channel = None
@@ -154,13 +163,13 @@ class MyTelegram:
                 print(f"[{current_time}] Questo video non esiste più ! {percorso}")
                 queue.task_done()
 
-    async def downloader(self, media_list: MyMedia):
+    async def downloader(self, media: MyMedia):
         # Prepara i workers
         queue = asyncio.Queue(1)
         workers = [asyncio.create_task(self.worker(queue)) for _ in range(3)]
-        for filemedia, ids in media_list.filemedia:
-            async for messg in self.takeout.iter_messages(self.channel.channel_id, wait_time=1, ids=ids):
-                await queue.put((messg, ".", filemedia))
+        for ids in media.ids:
+            async for messg in self.takeout.iter_messages(self.channel.channel_id, wait_time=1, ids=int(ids)):
+                await queue.put((messg, ".", messg.file.name))
         await queue.join()
         # Cancello i workers
         for workers_attivi in workers:
