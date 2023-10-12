@@ -34,7 +34,7 @@ class MyChannel:
         """
         :return: ritorna un elenco di oggetti MyMedia pronti per il download
         """
-        media_list = []
+        media_raw = []
         async for message in self.telegram.takeout.iter_messages(self.telegram.channel.channel_id,
                                                                  limit=None, reverse=True, wait_time=1):
             # Si accerta che sia un messaggio
@@ -50,38 +50,44 @@ class MyChannel:
                                     continue
                                 # Memorizza per ogni documento media filename e ID del messaggio
                                 file_name = message.file.name
-                                print(file_name, message.id)
-                                self.media.filemedia = message.file.name, message.id
+                                # print(file_name, message.id)
+                                self.media.ids = message.id
                         else:
                             # Se media è già stato istanziato abbiamo raggiunto qui la prossima locandina
                             # Se filemedia non è empty ( filmedia accettato in base alla list mimetype_list)
                             # lo salva nella lista media_list. Al termine passa ad un'altra locandina.
                             if self.media:
-                                if self.media.filemedia:
-                                    media_list.append(self.media)
+                                if self.media.ids:
+                                    media_raw.append(self.media)
                             # Ottiene il testo della Locandina
                             poster = message.message
-                            # Filtra il più possibile il testo poi lo passa a guessit e ottiene un titolo
+                            # Filtra il testo quindi lo passa a guessit
                             guess = MyGuessit(poster)
                             self.media = mytelegram.MyMedia()
-                            print(f"*{guess}")
-                            self.media.title = guess
+                            self.media.title = str(guess)
+                            self.media.posterid = message.id
+                            print(f"*{guess} {message.id}")
+
+        media_list = [media for media in media_raw if media.ids]
         return media_list
 
 
 async def main():
     anime = MyChannel()
     await anime.connect()
-    database = Database("CartoonAnme.db")
+    database = Database("CartoonAnime.db")
     await database.connect()
     await database.create_table("cartoonanime")
     media_list = await anime.struttura()
+
     for media in media_list:
-        # quando media.filename è [] passa al prossimo media.title
-        # [] = l'estensione non è presente nella lista mimetype_list
-        if media.filemedia:
-            print(media.title)
-            await anime.telegram.downloader(media)
+        print(media.title, media.posterid, media.ids)
+        category = "Multi" if len(media.ids) > 1 else "Single"
+        await database.insert_video("cartoonanime", media.title, media.posterid, category, media.ids)
+    await database.db.commit()
+
+    for media in media_list:
+        await anime.telegram.downloader(media)
 
 
 if __name__ == '__main__':
